@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrossWolf Games 2025 - Leaderboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(180deg, #000 0%, #1a1a1a 100%);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            border-bottom: 4px solid #ff6b35;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.5));
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-size: 3em;
+            font-weight: 900;
+            color: #ff6b35;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            font-size: 1.4em;
+            color: #ff6b35;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .container {
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .category-section {
+            margin-bottom: 40px;
+            background: rgba(20, 20, 40, 0.6);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #2d1b4e;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .category-title {
+            background: linear-gradient(135deg, #2d1b4e 0%, #4a2d6e 100%);
+            padding: 15px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #000;
+        }
+
+        .main-header {
+            background: #4a4a4a;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .main-header th {
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid #2a2a2a;
+            font-size: 0.95em;
+        }
+
+        .sub-header {
+            background: #3a3a3a;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .sub-header th {
+            padding: 10px 8px;
+            text-align: center;
+            border: 1px solid #2a2a2a;
+            font-size: 0.85em;
+        }
+
+        /* Cores alternadas para pares de colunas */
+        .bg-pair-1 { background: #1a1a2e !important; }
+        .bg-pair-2 { background: #16213e !important; }
+        .bg-pair-3 { background: #1a1a2e !important; }
+        .bg-pair-4 { background: #16213e !important; }
+
+        tbody tr {
+            background: #0a0a0a;
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: #1a1a1a;
+            transform: translateX(3px);
+        }
+
+        tbody td {
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid #2a2a2a;
+            color: #fff;
+        }
+
+        tbody td:first-child {
+            text-align: left;
+            font-weight: bold;
+            padding-left: 15px;
+        }
+
+        tbody td:nth-child(2) { background: #0f0f1e; }
+        tbody td:nth-child(3),
+        tbody td:nth-child(4) { background: #1a1a2e; }
+        tbody td:nth-child(5),
+        tbody td:nth-child(6) { background: #16213e; }
+        tbody td:nth-child(7),
+        tbody td:nth-child(8) { background: #1a1a2e; }
+        tbody td:nth-child(9),
+        tbody td:nth-child(10) { background: #16213e; }
+
+        tbody tr:hover td {
+            filter: brightness(1.2);
+        }
+
+        .empty-cell {
+            color: #666;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .error {
+            text-align: center;
+            padding: 60px;
+            color: #ff6b35;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5em;
+                letter-spacing: 1px;
+            }
+
+            .logo {
+                width: 60px;
+                height: 60px;
+            }
+
+            .header {
+                padding: 20px 10px;
+                gap: 10px;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .category-section {
+                margin-bottom: 30px;
+            }
+
+            .category-title {
+                font-size: 1em;
+                padding: 12px 8px;
+                letter-spacing: 1px;
+            }
+
+            table {
+                font-size: 0.65em;
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .main-header th {
+                padding: 10px 4px;
+                font-size: 0.85em;
+                min-width: 60px;
+            }
+
+            .sub-header th {
+                padding: 8px 4px;
+                font-size: 0.75em;
+                min-width: 60px;
+            }
+
+            tbody td {
+                padding: 10px 4px;
+                font-size: 0.95em;
+                min-width: 60px;
+            }
+
+            tbody td:first-child {
+                padding-left: 8px;
+                min-width: 120px;
+                position: sticky;
+                left: 0;
+                background: #0a0a0a;
+                z-index: 1;
+            }
+
+            tbody tr:hover td:first-child {
+                background: #1a1a1a;
+            }
+
+            .main-header th:first-child,
+            .sub-header th:first-child {
+                position: sticky;
+                left: 0;
+                background: #4a4a4a;
+                z-index: 2;
+                min-width: 120px;
+            }
+
+            .sub-header th:first-child {
+                background: #3a3a3a;
+            }
+
+            .footer {
+                font-size: 0.75em;
+                padding: 15px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.2em;
+            }
+
+            .logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            table {
+                font-size: 0.6em;
+            }
+
+            .main-header th,
+            .sub-header th {
+                min-width: 50px;
+                padding: 8px 3px;
+            }
+
+            tbody td {
+                min-width: 50px;
+                padding: 8px 3px;
+            }
+
+            tbody td:first-child,
+            .main-header th:first-child,
+            .sub-header th:first-child {
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://i.postimg.cc/GmrYG2D9/lobo.jpg" alt="CrossWolf Games Logo" class="logo">
+        <h1>CROSSWOLF GAMES 2025</h1>
+    </div>
+
+    <div class="container">
+        <div id="leaderboard">
+            <div class="loading">Carregando leaderboard...</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2025 CrossWolf Games - Todos os direitos reservados
+    </div>
+
+    <script>
+        const SHEET_ID = '1NbBb2yTa9gksLSZ7-LZhNuxtLTW-AhWRr5f9Z68VH2E';
+        const RANGE = 'LEADERBOARD!A:K';
+
+        async function loadLeaderboard() {
+            try {
+                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&range=${RANGE}`;
+
+                const response = await fetch(url);
+                const text = await response.text();
+                const json = JSON.parse(text.substring(47).slice(0, -2));
+
+                displayLeaderboard(json.table.rows);
+            } catch (error) {
+                document.getElementById('leaderboard').innerHTML =
+                    '<div class="error">Erro ao carregar os dados. Verifique se a planilha está pública.</div>';
+                console.error('Erro:', error);
+            }
+        }
+
+        function displayLeaderboard(rows) {
+            const container = document.getElementById('leaderboard');
+            const categories = [];
+            let currentCategory = null;
+
+            console.log('Total de linhas:', rows.length);
+
+            // Detecta primeira categoria INICIANTE FEMININO (começa direto com nomes)
+            if (rows.length > 0) {
+                const firstRow = rows[0];
+                const firstCells = firstRow.c || [];
+                const firstValue = (firstCells[0]?.v || '').toString().trim();
+
+                // Se não começa com INICIANTE/AVANÇADO, é INICIANTE FEMININO
+                if (!firstValue.includes('INICIANTE') && !firstValue.includes('AVANÇADO') &&
+                    !firstValue.includes('MASCULINO') && !firstValue.includes('FEMININO')) {
+                    console.log('Criando categoria INICIANTE FEMININO (implícita - começa com times)');
+                    currentCategory = {
+                        name: 'INICIANTE FEMININO',
+                        teams: []
+                    };
+                    categories.push(currentCategory);
+                    console.log('Categoria INICIANTE FEMININO criada');
+                }
+            }
+
+            rows.forEach((row, index) => {
+                const cells = row.c || [];
+                const firstCell = (cells[0]?.v || '').toString().trim();
+
+                console.log(`Linha ${index}:`, firstCell);
+
+                // Detecta nova categoria explícita
+                if ((firstCell.includes('FEMININO') || firstCell.includes('MASCULINO')) &&
+                    (firstCell.includes('INICIANTE') || firstCell.includes('AVANÇADO') || firstCell.includes('AVANÇ'))) {
+
+                    console.log('Nova categoria detectada:', firstCell);
+
+                    currentCategory = {
+                        name: firstCell,
+                        teams: []
+                    };
+                    categories.push(currentCategory);
+                }
+                // Linha de dados (times) - ignora linhas vazias e headers
+                else if (firstCell && firstCell !== '' && currentCategory &&
+                         !firstCell.includes('WOD') && !firstCell.includes('TOTAL') && !firstCell.includes('TIME') &&
+                         !firstCell.includes('FEMININO') && !firstCell.includes('MASCULINO') &&
+                         !firstCell.includes('INICIANTE') && !firstCell.includes('AVANÇADO') &&
+                         !firstCell.includes('COLOCAÇÃO')) {
+                    const teamData = [];
+                    for (let i = 0; i < 11; i++) {
+                        let value = cells[i]?.v !== undefined && cells[i]?.v !== null ? cells[i].v : '';
+
+                        // Formata o tempo do WOD 1 (coluna índice 3)
+                        if (i === 3 && value) {
+                            // Se for um objeto Date do Google Sheets
+                            if (typeof value === 'string' && value.includes('Date')) {
+                                const match = value.match(/Date\((\d+),(\d+),(\d+),(\d+),(\d+),(\d+)\)/);
+                                if (match) {
+                                    const minutes = match[5];
+                                    const seconds = match[6];
+                                    value = `${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}`;
+                                }
+                            }
+                        }
+
+                        teamData.push(value);
+                    }
+                    currentCategory.teams.push(teamData);
+                    console.log('Time adicionado:', teamData[0]);
+                }
+            });
+
+            console.log('Categorias encontradas:', categories.length);
+            categories.forEach(cat => {
+                console.log(`${cat.name}: ${cat.teams.length} times`);
+            });
+
+            // Gera HTML para cada categoria
+            let html = '';
+            categories.forEach(category => {
+                html += `<div class="category-section">
+                            <div class="category-title">${category.name}</div>
+                            <table>
+                                <thead>
+                                    <tr class="main-header">
+                                      <th></th>
+                                      <th></th>
+                                        <th colspan="2" class="bg-pair-1">WOD 1 - FOR TIME</th>
+                                        <th colspan="2" class="bg-pair-2">WOD 2 - REPS</th>
+                                        <th colspan="2" class="bg-pair-3">WOD 3A - REPS</th>
+                                        <th colspan="2" class="bg-pair-4">WOD 3B - KGS</th>
+                                    </tr>
+                                    <tr class="sub-header">
+                                        <th>TIME</th>
+                                        <th>COLOCAÇÃO (PONTOS)</th>
+                                        <th class="bg-pair-1">RESULTADO</th>
+                                        <th class="bg-pair-1">CLASSIFICAÇÃO</th>
+                                        <th class="bg-pair-2">RESULTADO</th>
+                                        <th class="bg-pair-2">CLASSIFICAÇÃO</th>
+                                        <th class="bg-pair-3">RESULTADO</th>
+                                        <th class="bg-pair-3">CLASSIFICAÇÃO</th>
+                                        <th class="bg-pair-4">RESULTADO</th>
+                                        <th class="bg-pair-4">CLASSIFICAÇÃO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+
+                category.teams.forEach(team => {
+                    html += '<tr>';
+                    team.forEach((value, idx) => {
+                        const isEmpty = value === '' || value === 0;
+                        const cellClass = isEmpty && idx > 0 ? 'empty-cell' : '';
+                        html += `<td class="${cellClass}">${isEmpty && idx > 0 ? '-' : value}</td>`;
+                    });
+                    html += '</tr>';
+                });
+
+                html += '</tbody></table></div>';
+            });
+
+            container.innerHTML = html || '<div class="error">Nenhum dado encontrado.</div>';
+        }
+
+        loadLeaderboard();
+        setInterval(loadLeaderboard, 30000);
+    </script>
+</body>
+</html>
